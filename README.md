@@ -67,7 +67,7 @@ npm run dev
 
 ---
 
-### Configuration du fichier `.env`
+## Configuration du fichier `.env`
 
 Pour configurer le fichier `.env`, vous devez récupérer les valeurs suivantes dans le portail Azure :
 
