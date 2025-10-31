@@ -1,5 +1,6 @@
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../lib/msalConfig";
+import { Button } from "./ui/button";
 
 export function Settings() {
   const { instance, accounts } = useMsal();
@@ -29,22 +30,24 @@ export function Settings() {
           <p className="text-sm text-neutral-400">
             ID utilisateur : {accounts[0].localAccountId}
           </p>
-          <button
+          <Button
             onClick={handleLogout}
-            className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+            variant="destructive"
+            className="bg-red-500 text-white mt-4"
           >
             Déconnexion
-          </button>
+          </Button>
         </div>
       ) : (
         <div>
           <p className="text-lg mb-2">Vous n'êtes pas connecté.</p>
-          <button
+          <Button
             onClick={handleLogin}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            variant="default"
+            className="bg-blue-500 text-white mt-4"
           >
             Connexion
-          </button>
+          </Button>
         </div>
       )}
     </div>

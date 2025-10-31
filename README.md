@@ -56,3 +56,16 @@ Pour configurer l'application dans Microsoft Entra ID, suivez ces étapes :
    - **User.Read**
 6. Accédez à votre application enregistrée via ce lien :  
    [Application enregistrée dans Microsoft Entra ID](https://portal.azure.com/#home).
+
+## Benchmark des composants calendrier React
+
+| Composant                     | Affichage agenda              | Création d'événement | Adapté au mobile        | Licence              | Implémenté ? |
+| ----------------------------- | ----------------------------- | -------------------- | ----------------------- | -------------------- | ------------ |
+| **react-big-calendar**        | Semaine, Jour, Mois           | Oui                  | Moyen (pas très adapté) | MIT                  | Oui          |
+| **FullCalendar (React)**      | Jour, Semaine, Mois           | Oui (sélection)      | Oui                     | MIT                  | Oui          |
+| **Scheduler from Syncfusion** | À tester                      | À tester             | À tester                | Gratuit / Commercial | Non          |
+| **React Schedule**            | À tester                      | À tester             | À tester                | Libre / Commercial   | Non          |
+| **TUI Calendar**              | À tester                      | À tester             | À tester                | MIT                  | Non          |
+| **DayPilot React**            | À tester                      | À tester             | À tester                | Commercial / Essai   | Non          |
+| **Kalend**                    | À tester                      | À tester             | À tester                | MIT                  | Non          |
+| **react-calendar**            | Uniquement sélection de dates | Non                  | Oui                     | MIT                  | Oui          |
