@@ -2,10 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-
 html,
 body,
 #root {
     height: 100%;
     background-color: #f9fafb;
+    margin: 0;
+    padding: 0;
+}
+
+.calendar-container {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+.calendar-container .fc-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.calendar-container .fc-toolbar-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.calendar-container .fc-button {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+    min-width: 2.5rem;
+}
+
+@media (min-width: 768px) {
+    .calendar-container {
+        padding: 2rem;
+    }
+
+    .calendar-container .fc-toolbar-title {
+        font-size: 1.25rem;
+    }
+
+    .calendar-container .fc-button {
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+    }
 }

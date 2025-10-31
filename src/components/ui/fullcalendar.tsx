@@ -19,7 +19,7 @@ export function FullCalendarComponent({ events }: { events: OutlookEvent[] }) {
   }));
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4">
+    <div className="bg-white rounded-md shadow-md p-4 calendar-container sm:p-6 md:p-8">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -48,6 +48,14 @@ export function FullCalendarComponent({ events }: { events: OutlookEvent[] }) {
                 alert("Erreur création événement");
               });
           }
+        }}
+        height="auto"
+        contentHeight="auto"
+        buttonText={{
+          today: "Aujourd'hui",
+          month: "Mois",
+          week: "Semaine",
+          day: "Jour",
         }}
       />
     </div>
