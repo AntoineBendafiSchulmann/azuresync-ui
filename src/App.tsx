@@ -13,9 +13,9 @@ const msalInstance = new PublicClientApplication(msalConfig);
 export default function App() {
   return (
     <MsalProvider instance={msalInstance}>
-      <div className="flex min-h-screen">
+      <div className="flex h-screen w-screen overflow-hidden">
         <Sidebar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 p-8 overflow-auto">
           <Routes>
             <Route
               path="/"

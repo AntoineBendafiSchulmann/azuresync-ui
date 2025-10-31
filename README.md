@@ -31,7 +31,7 @@
 ## Installation
 
 ```bash
-git clone https://github.com/ton-utilisateur/azuresync-ui.git
+git clone https://github.com/AntoineBendafiSchulmann/azuresync-ui
 cd azuresync-ui
 npm install
 cp .env.example .env
