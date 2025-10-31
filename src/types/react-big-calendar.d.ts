@@ -45,6 +45,10 @@ declare module "react-big-calendar" {
     selectable?: boolean;
     onSelectSlot?: (slotInfo: { start: Date; end: Date }) => void;
     defaultDate?: Date;
+    onNavigate?: (date: Date) => void;
+    onView?: (view: string) => void;
+    date?: Date
+    view?: string;
   }
 
   export const Calendar: ComponentType<CalendarProps>;

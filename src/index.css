@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "react-big-calendar/lib/css/react-big-calendar.css";
-@import "@fullcalendar/core/main.css";
-@import "@fullcalendar/daygrid/main.css";
-@import "@fullcalendar/timegrid/main.css";
 
 html,
 body,

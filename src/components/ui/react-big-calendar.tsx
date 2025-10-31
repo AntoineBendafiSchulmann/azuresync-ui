@@ -7,6 +7,7 @@ import { fr } from "date-fns/locale";
 import type { OutlookEvent } from "../../lib/graph";
 import { useMsal } from "@azure/msal-react";
 import { createOutlookEvent } from "../../lib/createOutlookEvent";
+import { useState } from "react";
 
 const locales = { fr };
 
@@ -38,6 +39,8 @@ const messages = {
 
 export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
   const { instance, accounts } = useMsal();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentView, setCurrentView] = useState("week");
 
   const mappedEvents = events
     .filter((evt) => evt && evt.subject && evt.start?.dateTime && evt.end?.dateTime)
@@ -65,22 +68,36 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
     }
   };
 
+  const handleNavigate = (date: Date) => {
+    console.log("Navigating to date:", date);
+    setCurrentDate(date);
+  };
+
+  const handleViewChange = (view: string) => {
+    console.log("Changing view to:", view);
+    setCurrentView(view);
+  };
+
   return (
     <div className="h-[700px] bg-white rounded-md shadow-md p-2 calendar-container">
-        <BigCalendar
+      <BigCalendar
         localizer={localizer}
         events={mappedEvents}
         startAccessor="start"
         endAccessor="end"
+        date={currentDate}
+        view={currentView}
         defaultDate={new Date()}
         defaultView="week"
-        views={['month', 'week', 'day']}
+        views={["month", "week", "day"]}
         popup
         style={{ height: "100%" }}
         messages={messages}
         selectable
         onSelectSlot={handleSelectSlot}
-        />
+        onNavigate={handleNavigate}
+        onView={handleViewChange}
+      />
     </div>
   );
 }
