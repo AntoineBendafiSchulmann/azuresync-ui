@@ -24,7 +24,7 @@
 | TypeScript               | Typage                       |
 | MSAL (Microsoft Auth)    | Authentification Azure       |
 | Microsoft Graph API      | Accès aux événements Outlook |
-| Tailwind CSS + shadcn/ui | UI moderne et accessible     |
+| Tailwind CSS + shadcn/ui | UI                           |
 
 ---
 
@@ -40,22 +40,65 @@ npm run dev
 
 ```
 
+---
+
 ## Configuration Microsoft Entra ID
 
-Pour configurer l'application dans Microsoft Entra ID, suivez ces étapes :
-
 1. Accédez au portail Microsoft Entra ID : [https://portal.azure.com](https://portal.azure.com).
-2. Naviguez vers **Microsoft Entra ID** > **Applications enregistrées**.
-3. Sélectionnez votre application ou créez-en une nouvelle.
+2. Naviguez vers **Microsoft Entra ID** dans le menu latéral gauche.
+3. Cliquez sur **Applications enregistrées** dans la section **Gérer**.
+   - Si vous avez déjà créé votre application, utilisez la barre de recherche en haut pour la retrouver rapidement.
+   - Si vous n'avez pas encore d'application, cliquez sur **+ Nouvelle inscription** pour en créer une.
 4. Configurez les redirections URI dans la section **Authentification** :
-   - `http://localhost:5173`
-   - `http://localhost:5173/auth/callback`
-5. Ajoutez les permissions API nécessaires dans la section **API Permissions** :
-   - **Calendars.Read**
-   - **Calendars.ReadWrite**
-   - **User.Read**
-6. Accédez à votre application enregistrée via ce lien :  
-   [Application enregistrée dans Microsoft Entra ID](https://portal.azure.com/#home).
+   - Cliquez sur **Authentification** dans le menu latéral gauche de votre application.
+   - Ajoutez les URI suivantes dans la section **URI de redirection** :
+     - `http://localhost:12345` (ou un autre port dépendant de comment vous lancez ce projet)
+   - Sauvegarder vos modifications.
+5. Ajoutez les permissions API nécessaires dans la section **API autorisées** :
+   - Cliquez sur **API autorisées** dans le menu latéral gauche de votre application.
+   - Cliquez sur **Ajouter une autorisation**.
+   - Sélectionnez **Microsoft Graph**.
+   - Choisissez **Permissions déléguées**.
+   - Recherchez et ajoutez les permissions suivantes :
+     - **Calendars.Read** : Permet de lire les calendriers utilisateur.
+     - **Calendars.ReadWrite** : Permet de lire et écrire dans les calendriers utilisateur.
+     - **User.Read** : Permet de lire les informations utilisateur.
+   - Accordez le consentement administrateur pour ces permissions si nécessaire.
+
+---
+
+### Configuration du fichier `.env`
+
+Pour configurer le fichier `.env`, vous devez récupérer les valeurs suivantes dans le portail Azure :
+
+1. **VITE_MS_CLIENT_ID** :
+
+   - C'est l'ID de l'application enregistrée.
+   - Où le trouver :
+     - Accédez à votre application dans **Applications enregistrées**.
+     - L'ID d'application (client) est affiché dans la section **Vue d'ensemble**.
+
+2. **VITE_MS_TENANT_ID** :
+
+   - C'est l'ID de votre organisation (tenant).
+   - Où le trouver :
+     - Accédez à **Microsoft Entra ID** > **Vue d'ensemble**.
+     - L'ID du locataire est affiché sous le nom **ID de tenant**.
+
+3. **VITE_MS_REDIRECT_URI** :
+   - C'est l'URI de redirection utilisée pour l'authentification.
+   - Où le configurer :
+     - Accédez à votre application dans **Applications enregistrées**.
+     - Cliquez sur **Authentification** dans le menu latéral gauche.
+     - Ajoutez l'URI de redirection dans la section **URI de redirection** (par exemple, `http://localhost:12345`).
+
+### Exemple de fichier `.env`
+
+```bash
+VITE_MS_CLIENT_ID="<ID d'application (client)>"
+VITE_MS_TENANT_ID="<ID de votre organisation (tenant)>"
+VITE_MS_REDIRECT_URI="http://localhost:12345"
+```
 
 ## Benchmark des composants calendrier React
 

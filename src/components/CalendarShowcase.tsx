@@ -11,7 +11,7 @@ import { EventForm } from "./ui/EventForm";
 
 type CalendarType = "shadcn" | "react-big-calendar" | "fullcalendar";
 
-export function Calendar() {
+export function CalendarShowcase() {
   const [calendarView, setCalendarView] = useState<CalendarType>("shadcn");
   const [events, setEvents] = useState<OutlookEvent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());

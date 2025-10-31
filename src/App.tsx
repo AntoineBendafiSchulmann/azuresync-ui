@@ -2,8 +2,8 @@
 
 import { Routes, Route } from "react-router-dom";
 import { Sidebar } from "./components/ui/sidebar";
-import { Calendar } from "./components/calendar";
-import { Settings } from "./components/settings";
+import { CalendarShowcase } from "./components/CalendarShowcase";
+import { Settings } from "./components/Settings";
 import { MsalProvider } from "@azure/msal-react";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./lib/msalConfig";
@@ -28,7 +28,7 @@ export default function App() {
                 </>
               }
             />
-            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/calendar_showcase" element={<CalendarShowcase />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </main>

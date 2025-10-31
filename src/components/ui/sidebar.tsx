@@ -8,7 +8,7 @@ export function Sidebar() {
 
   const items = [
     { label: "Accueil", icon: <Home className="h-6 w-6" />, to: "/" },
-    { label: "Calendriers", icon: <Calendar className="h-6 w-6" />, to: "/calendar" },
+    { label: "Calendriers", icon: <Calendar className="h-6 w-6" />, to: "/calendar_showcase" },
     { label: "Paramètres", icon: <Settings className="h-6 w-6" />, to: "/settings" },
   ];
 
