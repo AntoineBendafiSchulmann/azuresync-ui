@@ -36,8 +36,13 @@ cd azuresync-ui
 npm install
 cp .env.example .env
 # puis configure ton .env avec les infos Azure
-npm run dev
 
+```
+
+## Lancer le projet :
+
+```bash
+npm run dev
 ```
 
 ---
@@ -102,13 +107,18 @@ VITE_MS_REDIRECT_URI="http://localhost:12345"
 
 ## Benchmark des composants calendrier React
 
-| Composant                     | Affichage agenda              | Création d'événement | Adapté au mobile        | Licence              | Implémenté ? |
-| ----------------------------- | ----------------------------- | -------------------- | ----------------------- | -------------------- | ------------ |
-| **react-big-calendar**        | Semaine, Jour, Mois           | Oui                  | Moyen (pas très adapté) | MIT                  | Oui          |
-| **FullCalendar (React)**      | Jour, Semaine, Mois           | Oui (sélection)      | Oui                     | MIT                  | Oui          |
-| **Scheduler from Syncfusion** | À tester                      | À tester             | À tester                | Gratuit / Commercial | Non          |
-| **React Schedule**            | À tester                      | À tester             | À tester                | Libre / Commercial   | Non          |
-| **TUI Calendar**              | À tester                      | À tester             | À tester                | MIT                  | Non          |
-| **DayPilot React**            | À tester                      | À tester             | À tester                | Commercial / Essai   | Non          |
-| **Kalend**                    | À tester                      | À tester             | À tester                | MIT                  | Non          |
-| **react-calendar**            | Uniquement sélection de dates | Non                  | Oui                     | MIT                  | Oui          |
+| Composant                | Affichage agenda              | Création d'événement | Adapté au mobile        | Licence              | Implémenté ? |
+| ------------------------ | ----------------------------- | -------------------- | ----------------------- | -------------------- | ------------ |
+| **react-big-calendar**   | Semaine, Jour, Mois           | Oui                  | Moyen (pas très adapté) | MIT                  | Oui          |
+| **FullCalendar (React)** | Jour, Semaine, Mois           | Oui (sélection)      | Oui                     | MIT                  | Oui          |
+| **Syncfusion**           | Jour, Semaine, Mois, Agenda   | Oui                  | Oui                     | Gratuit / Commercial | Non          |
+| **TUI Calendar**         | Jour, Semaine, Mois           | Oui                  | Oui                     | MIT                  | Oui          |
+| **DayPilot React**       | Jour, Semaine, Mois           | Oui                  | Oui                     | Commercial / Essai   | Oui          |
+| **react-calendar**       | Uniquement sélection de dates | Non                  | Oui                     | MIT                  | Oui          |
+| **Kalend**               | Jour, Semaine, Mois           | Oui                  | Oui                     | MIT                  | Non          |
+| **RSuite Calendar**      | Jour, Semaine, Mois           | Non                  | Oui                     | MIT                  | Non          |
+| **Ant Design Calendar**  | Mois                          | Non                  | Oui                     | MIT                  | Non          |
+
+# bugs
+
+- gérer les sessions exipirées

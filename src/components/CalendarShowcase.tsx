@@ -8,8 +8,11 @@ import { ReactBigCalendar } from "./ui/react-big-calendar";
 import { Calendar as ShadcnCalendar } from "./ui/calendar";
 import { FullCalendarComponent } from "./ui/fullcalendar";
 import { EventForm } from "./ui/EventForm";
+import { SyncfusionScheduler } from "./ui/syncfusion-scheduler";
+import { TUICalendar } from "./ui/tui-calendar";
+import { DayPilotCalendarComponent } from "./ui/daypilot-calendar";
 
-type CalendarType = "shadcn" | "react-big-calendar" | "fullcalendar";
+type CalendarType = "shadcn" | "react-big-calendar" | "fullcalendar" | "syncfusion" | "tui-calendar" | "daypilot";
 
 export function CalendarShowcase() {
   const [calendarView, setCalendarView] = useState<CalendarType>("shadcn");
@@ -35,11 +38,11 @@ export function CalendarShowcase() {
 
   return (
     <div className="space-y-4">
-      <div className="flex gap-2 mb-2">
+      <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-2">
         <Button
           variant="default"
           className={`${
-            calendarView === "shadcn" ? "bg-white text-black" : "bg-black text-white"
+            calendarView === "shadcn" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
           }`}
           onClick={() => setCalendarView("shadcn")}
         >
@@ -48,7 +51,7 @@ export function CalendarShowcase() {
         <Button
           variant="default"
           className={`${
-            calendarView === "react-big-calendar" ? "bg-white text-black" : "bg-black text-white"
+            calendarView === "react-big-calendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
           }`}
           onClick={() => setCalendarView("react-big-calendar")}
         >
@@ -57,11 +60,38 @@ export function CalendarShowcase() {
         <Button
           variant="default"
           className={`${
-            calendarView === "fullcalendar" ? "bg-white text-black" : "bg-black text-white"
+            calendarView === "fullcalendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
           }`}
           onClick={() => setCalendarView("fullcalendar")}
         >
           FullCalendar
+        </Button>
+        <Button
+          variant="default"
+          className={`${
+            calendarView === "syncfusion" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
+          }`}
+          onClick={() => setCalendarView("syncfusion")}
+        >
+          Syncfusion
+        </Button>
+        <Button
+          variant="default"
+          className={`${
+            calendarView === "tui-calendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
+          }`}
+          onClick={() => setCalendarView("tui-calendar")}
+        >
+          TUI Calendar
+        </Button>
+        <Button
+          variant="default"
+          className={`${
+            calendarView === "daypilot" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
+          }`}
+          onClick={() => setCalendarView("daypilot")}
+        >
+          DayPilot
         </Button>
       </div>
 
@@ -80,11 +110,33 @@ export function CalendarShowcase() {
       )}
 
       {calendarView === "react-big-calendar" && (
-        <ReactBigCalendar events={events} />
+        <div className="bg-white rounded-md shadow-md p-4">
+          <ReactBigCalendar events={events} />
+        </div>
       )}
 
       {calendarView === "fullcalendar" && (
-        <FullCalendarComponent events={events} />
+        <div className="bg-white rounded-md shadow-md p-4">
+          <FullCalendarComponent events={events} />
+        </div>
+      )}
+
+      {calendarView === "syncfusion" && (
+        <div className="bg-white rounded-md shadow-md p-4">
+          <SyncfusionScheduler events={events} />
+        </div>
+      )}
+
+      {calendarView === "tui-calendar" && (
+        <div className="bg-white rounded-md shadow-md p-4">
+          <TUICalendar events={events} />
+        </div>
+      )}
+
+      {calendarView === "daypilot" && (
+        <div className="bg-white rounded-md shadow-md p-4">
+          <DayPilotCalendarComponent events={events} />
+        </div>
       )}
     </div>
   );

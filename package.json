@@ -12,6 +12,7 @@
   "dependencies": {
     "@azure/msal-browser": "^4.26.0",
     "@azure/msal-react": "^3.0.21",
+    "@daypilot/daypilot-lite-react": "^4.8.1",
     "@fullcalendar/daygrid": "^6.1.19",
     "@fullcalendar/interaction": "^6.1.19",
     "@fullcalendar/react": "^6.1.19",
@@ -21,6 +22,7 @@
     "@radix-ui/react-separator": "^1.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@syncfusion/ej2-react-schedule": "^31.2.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.548.0",
@@ -29,11 +31,12 @@
     "react-day-picker": "^9.11.1",
     "react-dom": "^19.1.1",
     "react-router-dom": "^7.9.5",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "tui-calendar": "^1.15.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
-    "@types/node": "^24.6.0",
+    "@types/node": "^24.10.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.4",
