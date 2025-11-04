@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../lib/msalConfig";
-import { Button } from "./ui/button";
+import { loginRequest } from "./lib/msalConfig";
+import { Button } from "./components/ui/button";
 
 const SESSION_DURATION_SECONDS = 60 * 60 * 24;
 

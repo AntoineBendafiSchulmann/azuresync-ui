@@ -119,6 +119,14 @@ VITE_MS_REDIRECT_URI="http://localhost:12345"
 | **RSuite Calendar**      | Jour, Semaine, Mois           | Non                  | Oui                     | MIT                  | Non          |
 | **Ant Design Calendar**  | Mois                          | Non                  | Oui                     | MIT                  | Non          |
 
-# bugs
+## Coûts à l'usage
 
-- gérer les sessions exipirées
+l’api graph elle-même n’est pas facturée, ce qui est payant c'est l'abonnement de/des utilisateur(s)
+
+| Usage                                   | Gratuit avec compte dev ? | Payant ?                                  |
+| --------------------------------------- | ------------------------- | ----------------------------------------- |
+| Lire son propre agenda                  | Oui                       | Non                                       |
+| Créer des événements                    | Oui                       | Non                                       |
+| Lire l’agenda d’autres collègues        | Non sans consentement     | Oui avec Microsoft 365                    |
+| Gérer plusieurs utilisateurs sans login | Non                       | Oui (nécessite accès Application + admin) |
+| Événements Teams, Bookings, Rooms       | Non                       | Oui (Pro uniquement)                      |

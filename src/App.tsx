@@ -2,8 +2,8 @@
 
 import { Routes, Route } from "react-router-dom";
 import { Sidebar } from "./components/ui/sidebar";
-import { CalendarShowcase } from "./components/CalendarShowcase";
-import { Settings } from "./components/Settings";
+import { CalendarShowcase } from "./CalendarShowcase";
+import { Settings } from "./Settings";
 import { MsalProvider } from "@azure/msal-react";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { msalConfig } from "./lib/msalConfig";
