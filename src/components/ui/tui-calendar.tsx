@@ -68,7 +68,7 @@ export function TUICalendar({ events }: { events: OutlookEvent[] }) {
   };
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4">
+    <div className="rounded-md shadow-md">
       <CalendarLegendButtons
         activeView={activeView}
         onViewChange={handleViewChange}

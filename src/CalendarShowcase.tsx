@@ -99,7 +99,7 @@ export function CalendarShowcase() {
 
       {calendarView === "shadcn" && (
         <div className="flex flex-col">
-          <div className="bg-white rounded shadow p-6 w-fit">
+          <div className="rounded shadow p-6 w-fit">
             <ShadcnCalendar
               mode="single"
               selected={selectedDate}
@@ -110,31 +110,31 @@ export function CalendarShowcase() {
       )}
 
       {calendarView === "react-big-calendar" && (
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div>
           <ReactBigCalendar events={events} />
         </div>
       )}
 
       {calendarView === "fullcalendar" && (
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div>
           <FullCalendarComponent events={events} />
         </div>
       )}
 
       {calendarView === "syncfusion" && (
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div>
           <SyncfusionScheduler events={events} />
         </div>
       )}
 
       {calendarView === "tui-calendar" && (
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div>
           <TUICalendar events={events} />
         </div>
       )}
 
       {calendarView === "daypilot" && (
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div>
           <DayPilotCalendarComponent events={events} />
         </div>
       )}

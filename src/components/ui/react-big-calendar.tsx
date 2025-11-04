@@ -79,7 +79,7 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
   };
 
   return (
-    <div className="h-[700px] bg-white rounded-md shadow-md p-4 calendar-container sm:h-[800px] md:h-[900px]">
+    <div className="h-[700px] rounded-md shadow-md calendar-container sm:h-[800px] md:h-[900px]">
       <BigCalendar
         localizer={localizer}
         events={mappedEvents}

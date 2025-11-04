@@ -19,7 +19,7 @@ export function FullCalendarComponent({ events }: { events: OutlookEvent[] }) {
   }));
 
   return (
-    <div className="bg-white rounded-md shadow-md p-4 calendar-container sm:p-6 md:p-8">
+    <div className="shadow-md calendar-container">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"

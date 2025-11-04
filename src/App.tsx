@@ -15,7 +15,7 @@ export default function App() {
     <MsalProvider instance={msalInstance}>
       <div className="flex h-screen w-screen overflow-hidden">
         <Sidebar />
-        <main className="flex-1 p-8 overflow-auto">
+        <main className="flex-1 p-2 overflow-auto">
           <Routes>
             <Route
               path="/"
