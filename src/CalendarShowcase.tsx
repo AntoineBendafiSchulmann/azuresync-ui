@@ -3,21 +3,27 @@
 import { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import { fetchOutlookEvents, type OutlookEvent } from "./lib/graph";
-import { Button } from "./components/ui/button"
+import { Button } from "./components/ui/button";
 import { ReactBigCalendar } from "./components/ui/react-big-calendar";
-import { Calendar as ShadcnCalendar } from "./components/ui/calendar";
 import { FullCalendarComponent } from "./components/ui/fullcalendar";
 import { EventForm } from "./components/ui/EventForm";
 import { SyncfusionScheduler } from "./components/ui/syncfusion-scheduler";
 import { TUICalendar } from "./components/ui/tui-calendar";
 import { DayPilotCalendarComponent } from "./components/ui/daypilot-calendar";
 
-type CalendarType = "shadcn" | "react-big-calendar" | "fullcalendar" | "syncfusion" | "tui-calendar" | "daypilot";
+type CalendarType = "react-big-calendar" | "fullcalendar" | "syncfusion" | "tui-calendar" | "daypilot";
+
+const calendarComponentMap: Record<CalendarType, React.FC<{ events: OutlookEvent[] }>> = {
+  "react-big-calendar": ReactBigCalendar,
+  "fullcalendar": FullCalendarComponent,
+  "syncfusion": SyncfusionScheduler,
+  "tui-calendar": TUICalendar,
+  "daypilot": DayPilotCalendarComponent,
+};
 
 export function CalendarShowcase() {
-  const [calendarView, setCalendarView] = useState<CalendarType>("shadcn");
+  const [calendarView, setCalendarView] = useState<CalendarType>("react-big-calendar");
   const [events, setEvents] = useState<OutlookEvent[]>([]);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const { instance, accounts } = useMsal();
 
   useEffect(() => {
@@ -36,108 +42,30 @@ export function CalendarShowcase() {
     }
   };
 
+  const ActiveCalendar = calendarComponentMap[calendarView];
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap gap-2 justify-center sm:justify-start mb-2">
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "shadcn" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("shadcn")}
-        >
-          Shadcn
-        </Button>
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "react-big-calendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("react-big-calendar")}
-        >
-          React Big Calendar
-        </Button>
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "fullcalendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("fullcalendar")}
-        >
-          FullCalendar
-        </Button>
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "syncfusion" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("syncfusion")}
-        >
-          Syncfusion
-        </Button>
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "tui-calendar" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("tui-calendar")}
-        >
-          TUI Calendar
-        </Button>
-        <Button
-          variant="default"
-          className={`${
-            calendarView === "daypilot" ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
-          }`}
-          onClick={() => setCalendarView("daypilot")}
-        >
-          DayPilot
-        </Button>
+        {Object.keys(calendarComponentMap).map((key) => (
+          <Button
+            key={key}
+            variant="default"
+            className={`${
+              calendarView === key ? "bg-white text-black border-black" : "bg-black text-white border-transparent"
+            }`}
+            onClick={() => setCalendarView(key as CalendarType)}
+          >
+            {key.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+          </Button>
+        ))}
       </div>
 
       <EventForm onEventCreated={refreshEvents} />
 
-      {calendarView === "shadcn" && (
-        <div className="flex flex-col">
-          <div className="rounded shadow p-6 w-fit">
-            <ShadcnCalendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-            />
-          </div>
-        </div>
-      )}
-
-      {calendarView === "react-big-calendar" && (
-        <div>
-          <ReactBigCalendar events={events} />
-        </div>
-      )}
-
-      {calendarView === "fullcalendar" && (
-        <div>
-          <FullCalendarComponent events={events} />
-        </div>
-      )}
-
-      {calendarView === "syncfusion" && (
-        <div>
-          <SyncfusionScheduler events={events} />
-        </div>
-      )}
-
-      {calendarView === "tui-calendar" && (
-        <div>
-          <TUICalendar events={events} />
-        </div>
-      )}
-
-      {calendarView === "daypilot" && (
-        <div>
-          <DayPilotCalendarComponent events={events} />
-        </div>
-      )}
+      <div>
+        <ActiveCalendar events={events} />
+      </div>
     </div>
   );
 }

@@ -49,6 +49,9 @@ body,
     margin-top: 0.5rem;
 }
 
+.fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
+    margin-left: 0;
+}
 @media (min-width: 768px) {
     .calendar-container {
         padding: 2rem;
