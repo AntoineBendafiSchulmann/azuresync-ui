@@ -22,18 +22,31 @@ body,
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
 .calendar-container .fc-toolbar-title {
     font-size: 1rem;
     font-weight: 600;
+    white-space: nowrap;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-container .fc-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 .calendar-container .fc-button {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     padding: 0.25rem 0.5rem;
     min-width: 2.5rem;
+}
+
+.calendar-container .fc-button.fc-today-button {
+    margin-top: 0.5rem;
 }
 
 @media (min-width: 768px) {
@@ -41,12 +54,25 @@ body,
         padding: 2rem;
     }
 
+    .calendar-container .fc-toolbar {
+        flex-wrap: nowrap;
+    }
+
     .calendar-container .fc-toolbar-title {
         font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .calendar-container .fc-button-group {
+        justify-content: flex-end;
     }
 
     .calendar-container .fc-button {
         font-size: 1rem;
         padding: 0.5rem 1rem;
+    }
+
+    .calendar-container .fc-button.fc-today-button {
+        margin-top: 0.5rem;
     }
 }
