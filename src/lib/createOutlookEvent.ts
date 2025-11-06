@@ -5,6 +5,23 @@ interface EventInput {
   subject: string;
   startDate: Date;
   endDate: Date;
+  attendees?: string[];
+}
+
+interface GraphEventInput {
+  subject: string;
+  start: {
+    dateTime: string;
+    timeZone: string;
+  };
+  end: {
+    dateTime: string;
+    timeZone: string;
+  };
+  attendees?: {
+    emailAddress: { address: string };
+    type: "required";
+  }[];
 }
 
 export async function createOutlookEvent(
@@ -17,17 +34,24 @@ export async function createOutlookEvent(
     account,
   });
 
-  const body = {
+  const body: GraphEventInput = {
     subject: event.subject,
     start: {
       dateTime: event.startDate.toISOString(),
-      timeZone: "Europe/Paris",
+      timeZone: "UTC",
     },
     end: {
       dateTime: event.endDate.toISOString(),
-      timeZone: "Europe/Paris",
+      timeZone: "UTC",
     },
   };
+
+  if (event.attendees?.length) {
+    body.attendees = event.attendees.map((email) => ({
+      emailAddress: { address: email },
+      type: "required",
+    }));
+  }
 
   const res = await fetch("https://graph.microsoft.com/v1.0/me/events", {
     method: "POST",

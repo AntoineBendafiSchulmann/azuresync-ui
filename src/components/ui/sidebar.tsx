@@ -4,7 +4,7 @@ import { cn } from "../../lib/utils";
 import { useState } from "react";
 
 export function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const items = [
     { label: "Accueil", icon: <Home className="h-6 w-6" />, to: "/" },

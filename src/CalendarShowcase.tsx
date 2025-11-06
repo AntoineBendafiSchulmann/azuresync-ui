@@ -10,10 +10,14 @@ import { EventForm } from "./components/ui/EventForm";
 import { SyncfusionScheduler } from "./components/ui/syncfusion-scheduler";
 import { TUICalendar } from "./components/ui/tui-calendar";
 import { DayPilotCalendarComponent } from "./components/ui/daypilot-calendar";
+import { PlannableTasksPanel } from "./components/ui/plannable-tasks-panel";
 
 type CalendarType = "react-big-calendar" | "fullcalendar" | "syncfusion" | "tui-calendar" | "daypilot";
 
-const calendarComponentMap: Record<CalendarType, React.FC<{ events: OutlookEvent[] }>> = {
+const calendarComponentMap: Record<
+  CalendarType,
+  React.FC<{ events: OutlookEvent[]; onEventCreated?: () => void }>
+> = {
   "react-big-calendar": ReactBigCalendar,
   "fullcalendar": FullCalendarComponent,
   "syncfusion": SyncfusionScheduler,
@@ -21,8 +25,9 @@ const calendarComponentMap: Record<CalendarType, React.FC<{ events: OutlookEvent
   "daypilot": DayPilotCalendarComponent,
 };
 
+
 export function CalendarShowcase() {
-  const [calendarView, setCalendarView] = useState<CalendarType>("react-big-calendar");
+  const [calendarView, setCalendarView] = useState<CalendarType>("fullcalendar");
   const [events, setEvents] = useState<OutlookEvent[]>([]);
   const { instance, accounts } = useMsal();
 
@@ -63,8 +68,12 @@ export function CalendarShowcase() {
 
       <EventForm onEventCreated={refreshEvents} />
 
+      <div className="mb-4">
+        <PlannableTasksPanel />
+      </div>
+
       <div>
-        <ActiveCalendar events={events} />
+        <ActiveCalendar events={events} onEventCreated={refreshEvents} />
       </div>
     </div>
   );
