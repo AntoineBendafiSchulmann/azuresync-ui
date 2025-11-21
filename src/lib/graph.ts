@@ -50,8 +50,8 @@ export async function createOutlookEvent(
     },
     body: JSON.stringify({
       subject: event.subject,
-      start: { dateTime: event.start, timeZone: "UTC" },
-      end: { dateTime: event.end, timeZone: "UTC" },
+      start: { dateTime: event.start, timeZone: "Europe/Paris" },
+      end: { dateTime: event.end, timeZone: "Europe/Paris" },
     }),
   });
 

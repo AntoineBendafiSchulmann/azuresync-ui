@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "./button";
 import { createOutlookEvent } from "../../lib/createOutlookEvent";
 import { useMsal } from "@azure/msal-react";
+import { formatLocalDateTime } from "../../lib/utils/dateUtils";
 
 interface EventFormProps {
   onEventCreated: () => void;
@@ -16,10 +17,13 @@ export function EventForm({ onEventCreated }: EventFormProps) {
   const handleCreateEvent = async () => {
     if (accounts.length > 0) {
       try {
+        const startDate = formatLocalDateTime(new Date(newEvent.start));
+        const endDate = formatLocalDateTime(new Date(newEvent.end));
+
         await createOutlookEvent(instance, accounts[0], {
           subject: newEvent.subject,
-          startDate: new Date(newEvent.start),
-          endDate: new Date(newEvent.end),
+          startDate,
+          endDate,
         });
         alert("Événement créé avec succès !");
         setNewEvent({ subject: "", start: "", end: "" });

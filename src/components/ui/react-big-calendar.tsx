@@ -8,6 +8,7 @@ import type { OutlookEvent } from "../../lib/graph";
 import { useMsal } from "@azure/msal-react";
 import { createOutlookEvent } from "../../lib/createOutlookEvent";
 import { useState } from "react";
+import { formatLocalDateTime } from "../../lib/utils/dateUtils";
 
 const locales = { fr };
 
@@ -46,17 +47,20 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
     .filter((evt) => evt && evt.subject && evt.start?.dateTime && evt.end?.dateTime)
     .map((evt) => ({
       title: evt.subject,
-      start: new Date(evt.start.dateTime),
-      end: new Date(evt.end.dateTime),
+      start: new Date(evt.start.dateTime + "Z"),
+      end: new Date(evt.end.dateTime + "Z"),
     }));
 
   const handleSelectSlot = (slotInfo: { start: Date; end: Date }) => {
     const title = prompt("Titre de l’événement ?");
     if (title && accounts.length > 0) {
+      const startDate = formatLocalDateTime(slotInfo.start);
+      const endDate = formatLocalDateTime(slotInfo.end);
+
       createOutlookEvent(instance, accounts[0], {
         subject: title,
-        startDate: slotInfo.start,
-        endDate: slotInfo.end,
+        startDate,
+        endDate,
       })
         .then(() => {
           alert("Événement créé !");

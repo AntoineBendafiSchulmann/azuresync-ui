@@ -10,6 +10,7 @@ import { useMsal } from "@azure/msal-react";
 import { createOutlookEvent } from "../../lib/createOutlookEvent";
 import type { Activity } from "../../types/activity";
 import { useRef } from "react";
+import { formatLocalDateTime } from "../../lib/utils/dateUtils";
 
 interface Props {
   events: OutlookEvent[];
@@ -20,11 +21,11 @@ export function FullCalendarComponent({ events, onEventCreated }: Props) {
   const { instance, accounts } = useMsal();
   const calendarRef = useRef(null);
 
-  const mappedEvents = events.map((evt) => ({
+const mappedEvents = events.map((evt) => ({
     title: evt.subject,
-    start: evt.start.dateTime,
-    end: evt.end.dateTime,
-  }));
+    start: new Date(evt.start.dateTime + "Z"),
+    end: new Date(evt.end.dateTime + "Z"),
+}));
   
   return (
     <div className="shadow-md calendar-container">
@@ -57,15 +58,10 @@ export function FullCalendarComponent({ events, onEventCreated }: Props) {
 
             const data = JSON.parse(info.draggedEl?.dataset?.event || "{}") as Activity;
 
-            const startDate = new Date(info.event.start!.getTime());
-            const endDate = info.event.end
-              ? new Date(info.event.end.getTime())
-              : new Date(startDate.getTime() + 30 * 60 * 1000);
-
-            if (info.view.type === "dayGridMonth") {
-              startDate.setHours(9, 0, 0, 0);
-              endDate.setHours(9, 30, 0, 0);
-            }
+            const startDate = formatLocalDateTime(info.event.start!);
+            const endDate = formatLocalDateTime(
+              info.event.end ?? new Date(info.event.start!.getTime() + 30 * 60 * 1000)
+            );
 
             if (data && accounts.length > 0) {
               await createOutlookEvent(instance, accounts[0], {
@@ -74,11 +70,9 @@ export function FullCalendarComponent({ events, onEventCreated }: Props) {
                 endDate,
                 attendees: data.personEmails,
               });
-
-              if (onEventCreated) {
-                onEventCreated();
-              }
             }
+
+            onEventCreated?.();
           } catch (e) {
             console.error("Erreur eventReceive:", e);
           }

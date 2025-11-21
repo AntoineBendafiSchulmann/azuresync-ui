@@ -3,8 +3,8 @@ import type { IPublicClientApplication, AccountInfo } from "@azure/msal-browser"
 
 interface EventInput {
   subject: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
   attendees?: string[];
 }
 
@@ -37,12 +37,12 @@ export async function createOutlookEvent(
   const body: GraphEventInput = {
     subject: event.subject,
     start: {
-      dateTime: event.startDate.toISOString(),
-      timeZone: "UTC",
+      dateTime: event.startDate,
+      timeZone: "Europe/Paris",
     },
     end: {
-      dateTime: event.endDate.toISOString(),
-      timeZone: "UTC",
+      dateTime: event.endDate,
+      timeZone: "Europe/Paris",
     },
   };
 
