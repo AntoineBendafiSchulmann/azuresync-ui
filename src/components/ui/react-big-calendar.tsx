@@ -140,6 +140,10 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
     return () => observer.disconnect();
   }, [currentDate, currentView]);
 
+  useEffect(() => {
+    document.body.dataset.calendarView = currentView;
+  }, [currentView]);
+
   return (
     <div
       ref={calendarRef}

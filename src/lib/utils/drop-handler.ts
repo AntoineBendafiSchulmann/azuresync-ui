@@ -14,10 +14,10 @@ export function registerCalendarDropHandlers(
     clearHighlights();
 
     const hovered = document.elementFromPoint(e.clientX, e.clientY);
-    let slot = hovered?.closest(".rbc-time-slot") as HTMLElement | null;
+    let slot = hovered?.closest(".rbc-time-slot, .rbc-day-bg") as HTMLElement | null;
 
     if (!slot) {
-      const allSlots = document.querySelectorAll(".rbc-time-slot");
+      const allSlots = document.querySelectorAll(".rbc-time-slot, .rbc-day-bg");
       allSlots.forEach((el) => {
         const rect = el.getBoundingClientRect();
         if (
@@ -31,14 +31,14 @@ export function registerCalendarDropHandlers(
       });
     }
 
-    if (slot && slot.getAttribute("data-time")) {
+    if (slot) {
       slot.classList.add("dropped-slot");
     }
   };
 
   const clearHighlights = () => {
     document
-      .querySelectorAll(".rbc-time-slot.dropped-slot")
+      .querySelectorAll(".rbc-time-slot.dropped-slot, .rbc-day-bg.dropped-slot")
       .forEach((el) => el.classList.remove("dropped-slot"));
   };
 
@@ -46,11 +46,16 @@ export function registerCalendarDropHandlers(
     e.preventDefault();
     clearHighlights();
 
+    if (document.body.dataset.calendarView === "month") {
+      alert('Le glisser-déposer n\'est pas disponible en vue "Mois"');
+      return;
+    }
+
     const target = document.elementFromPoint(e.clientX, e.clientY);
-    let slot = target?.closest(".rbc-time-slot") as HTMLElement | null;
+    let slot = target?.closest(".rbc-time-slot, .rbc-day-bg") as HTMLElement | null;
 
     if (!slot) {
-      const allSlots = document.querySelectorAll(".rbc-time-slot");
+      const allSlots = document.querySelectorAll(".rbc-time-slot, .rbc-day-bg");
       allSlots.forEach((el) => {
         const rect = el.getBoundingClientRect();
         if (

@@ -23,7 +23,7 @@ export default function App() {
                 <>
                   <h1 className="text-3xl font-bold mb-4">AzureSync UI</h1>
                   <p className="text-neutral-700">
-                    Bienvenue dans ton tableau de bord de synchronisation Outlook.
+                    Bienvenue dans votre tableau de bord de synchronisation Outlook.
                   </p>
                 </>
               }

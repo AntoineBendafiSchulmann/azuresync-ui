@@ -58,6 +58,26 @@ body,
     transition: none;
 }
 
+body[data-calendar-view="month"] .rbc-month-view .rbc-day-bg.dropped-slot {
+    background-color: #f3f4f6;
+    border: 2px dashed #9ca3af;
+    position: relative;
+}
+
+body[data-calendar-view="month"] .rbc-month-view .rbc-day-bg.dropped-slot::after {
+    content: "🚫";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+body[data-calendar-view="month"] .rbc-month-view .rbc-day-bg {
+    cursor: not-allowed;
+}
+
 @media (min-width: 768px) {
     .calendar-container {
         padding: 2rem;
