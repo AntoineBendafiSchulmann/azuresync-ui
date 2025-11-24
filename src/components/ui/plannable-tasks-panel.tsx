@@ -14,6 +14,9 @@ export function PlannableTasksPanel() {
   return (
     <div ref={containerRef} className="border p-4 bg-white rounded shadow max-w-md">
       <h2 className="text-lg font-bold mb-2">Activités à planifier</h2>
+      <p className="text-sm text-gray-500 mb-4">
+        Cette fonctionnalité est disponible uniquement en vue "Semaine" et "Jour".
+      </p>
       <ul className="space-y-2">
         {MOCK_ACTIVITIES.map((activity) => {
           const activityJson = JSON.stringify({

@@ -58,64 +58,81 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
     ...localEvents,
   ];
 
-    useEffect(() => {
+  useEffect(() => {
     if (calendarRef.current && accounts.length > 0) {
-
-        const cleanup = registerCalendarDropHandlers(
+      const cleanup = registerCalendarDropHandlers(
         calendarRef,
         instance,
         accounts[0],
         (newEvent) => {
-            setLocalEvents((prev) => [...prev, newEvent]);
+          setLocalEvents((prev) => [...prev, newEvent]);
         }
-        );
+      );
 
-        return () => cleanup?.();
+      return () => cleanup?.();
     }
-    }, [accounts, instance]);
+  }, [accounts, instance, currentView]);
 
   useEffect(() => {
-  const observer = new MutationObserver(() => {
-    const columns = document.querySelectorAll(".rbc-time-content .rbc-day-slot");
-    const monday = new Date(currentDate);
-    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+    let isDataTimeGenerated = false;
 
-    columns.forEach((colEl, colIndex) => {
-      const col = colEl as HTMLElement;
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + colIndex);
-      const isoDate = date.toISOString().split("T")[0];
+    const generateDataTimeAttributes = () => {
+      if (isDataTimeGenerated) {
+        return;
+      }
 
-      col.setAttribute("data-date", isoDate);
+      const columns = document.querySelectorAll(".rbc-time-content .rbc-day-slot");
+      if (!columns || columns.length === 0) return;
 
-      const timeSlots = col.querySelectorAll(".rbc-time-slot");
-      const generatedTimes: string[] = [];
+      const generatedTimesByColumn: string[][] = [];
 
-      timeSlots.forEach((slot, index) => {
-        const slotEl = slot as HTMLElement;
-        const hour = Math.floor(index / 2);
-        const minute = index % 2 === 0 ? "00" : "30";
-        const datetime = new Date(`${isoDate}T${hour.toString().padStart(2, "0")}:${minute}:00`);
-        slotEl.setAttribute("data-time", datetime.toISOString());
-        generatedTimes.push(datetime.toISOString());
+      columns.forEach((colEl, colIndex) => {
+        const col = colEl as HTMLElement;
+        const baseDate = new Date(currentDate);
+
+        if (currentView === "week") {
+          const monday = new Date(baseDate);
+          monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+          baseDate.setDate(monday.getDate() + colIndex);
+        } else if (currentView === "day") {
+          baseDate.setDate(currentDate.getDate());
+        }
+
+        const isoDate = baseDate.toISOString().split("T")[0];
+        col.setAttribute("data-date", isoDate);
+
+        const timeSlots = col.querySelectorAll(".rbc-time-slot");
+        const generatedTimes: string[] = [];
+
+        timeSlots.forEach((slot, index) => {
+          const slotEl = slot as HTMLElement;
+          const hour = Math.floor(index / 2);
+          const minute = index % 2 === 0 ? "00" : "30";
+          const datetime = new Date(`${isoDate}T${hour.toString().padStart(2, "0")}:${minute}:00`);
+          slotEl.setAttribute("data-time", datetime.toISOString());
+          generatedTimes.push(datetime.toISOString());
+        });
+
+        generatedTimesByColumn.push(generatedTimes);
+        console.log(`tranches horaires de 30 min générées pour ${isoDate}:`, generatedTimes);
       });
 
-      //console.log(`tranches horaires de 30 min générées pour ${isoDate}:`, generatedTimes);
-    });
-  });
-
-  const content = document.querySelector(".rbc-time-content");
-  if (content) {
-    const rerun = () => {
-      observer.disconnect();
-      observer.observe(content, { childList: true, subtree: true });
+      isDataTimeGenerated = true;
     };
-    setTimeout(rerun, 0);
-    setTimeout(rerun, 100);
-  }
 
-  return () => observer.disconnect();
-}, [currentDate, currentView]);
+    generateDataTimeAttributes();
+
+    const content = document.querySelector(".rbc-time-content");
+    const observer = new MutationObserver(() => {
+      generateDataTimeAttributes();
+    });
+
+    if (content) {
+      observer.observe(content, { childList: true, subtree: true });
+    }
+
+    return () => observer.disconnect();
+  }, [currentDate, currentView]);
 
   return (
     <div
@@ -155,7 +172,10 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
           }
         }}
         onNavigate={(date) => setCurrentDate(date)}
-        onView={(view) => setCurrentView(view)}
+        onView={(view) => {
+          setCurrentView(view);
+          console.log(`Vue changée : ${view}`);
+        }}
       />
     </div>
   );
