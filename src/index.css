@@ -52,6 +52,12 @@ body,
 .fc-direction-ltr .fc-toolbar > * > :not(:first-child) {
     margin-left: 0;
 }
+
+.rbc-time-slot.dropped-slot {
+    background-color: rgb(237, 101, 59);
+    transition: none;
+}
+
 @media (min-width: 768px) {
     .calendar-container {
         padding: 2rem;

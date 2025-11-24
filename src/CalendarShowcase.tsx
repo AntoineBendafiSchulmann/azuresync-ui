@@ -27,7 +27,7 @@ const calendarComponentMap: Record<
 
 
 export function CalendarShowcase() {
-  const [calendarView, setCalendarView] = useState<CalendarType>("fullcalendar");
+  const [calendarView, setCalendarView] = useState<CalendarType>("react-big-calendar");
   const [events, setEvents] = useState<OutlookEvent[]>([]);
   const { instance, accounts } = useMsal();
 

@@ -7,8 +7,10 @@ import { fr } from "date-fns/locale";
 import type { OutlookEvent } from "../../lib/graph";
 import { useMsal } from "@azure/msal-react";
 import { createOutlookEvent } from "../../lib/createOutlookEvent";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { formatLocalDateTime } from "../../lib/utils/dateUtils";
+import { registerCalendarDropHandlers } from "../../lib/utils/drop-handler";
+import { toZonedTime } from "date-fns-tz";
 
 const locales = { fr };
 
@@ -40,50 +42,86 @@ const messages = {
 
 export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
   const { instance, accounts } = useMsal();
+  const calendarRef = useRef<HTMLDivElement>(null);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState("week");
+  const [localEvents, setLocalEvents] = useState<{ title: string; start: Date; end: Date }[]>([]);
 
-  const mappedEvents = events
-    .filter((evt) => evt && evt.subject && evt.start?.dateTime && evt.end?.dateTime)
-    .map((evt) => ({
-      title: evt.subject,
-      start: new Date(evt.start.dateTime + "Z"),
-      end: new Date(evt.end.dateTime + "Z"),
-    }));
+  const mappedEvents = [
+    ...events
+      .filter((evt) => evt && evt.subject && evt.start?.dateTime && evt.end?.dateTime)
+      .map((evt) => ({
+        title: evt.subject,
+        start: new Date(toZonedTime(evt.start.dateTime, "Europe/Paris").getTime() + 60 * 60 * 1000),
+        end: new Date(toZonedTime(evt.end.dateTime, "Europe/Paris").getTime() + 60 * 60 * 1000),
+      })),
+    ...localEvents,
+  ];
 
-  const handleSelectSlot = (slotInfo: { start: Date; end: Date }) => {
-    const title = prompt("Titre de l’événement ?");
-    if (title && accounts.length > 0) {
-      const startDate = formatLocalDateTime(slotInfo.start);
-      const endDate = formatLocalDateTime(slotInfo.end);
+    useEffect(() => {
+    if (calendarRef.current && accounts.length > 0) {
 
-      createOutlookEvent(instance, accounts[0], {
-        subject: title,
-        startDate,
-        endDate,
-      })
-        .then(() => {
-          alert("Événement créé !");
-        })
-        .catch((err) => {
-          console.error(err);
-          alert("Erreur création événement");
-        });
+        const cleanup = registerCalendarDropHandlers(
+        calendarRef,
+        instance,
+        accounts[0],
+        (newEvent) => {
+            setLocalEvents((prev) => [...prev, newEvent]);
+        }
+        );
+
+        return () => cleanup?.();
     }
-  };
+    }, [accounts, instance]);
 
-  const handleNavigate = (date: Date) => {
-    console.log("Navigating to date:", date);
-    setCurrentDate(date);
-  };
+  useEffect(() => {
+  const observer = new MutationObserver(() => {
+    const columns = document.querySelectorAll(".rbc-time-content .rbc-day-slot");
+    const monday = new Date(currentDate);
+    monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
 
-  const handleViewChange = (view: string) => {
-    console.log("Changing view to:", view);
-    setCurrentView(view);
-  };
+    columns.forEach((colEl, colIndex) => {
+      const col = colEl as HTMLElement;
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + colIndex);
+      const isoDate = date.toISOString().split("T")[0];
+
+      col.setAttribute("data-date", isoDate);
+
+      const timeSlots = col.querySelectorAll(".rbc-time-slot");
+      const generatedTimes: string[] = [];
+
+      timeSlots.forEach((slot, index) => {
+        const slotEl = slot as HTMLElement;
+        const hour = Math.floor(index / 2);
+        const minute = index % 2 === 0 ? "00" : "30";
+        const datetime = new Date(`${isoDate}T${hour.toString().padStart(2, "0")}:${minute}:00`);
+        slotEl.setAttribute("data-time", datetime.toISOString());
+        generatedTimes.push(datetime.toISOString());
+      });
+
+      //console.log(`tranches horaires de 30 min générées pour ${isoDate}:`, generatedTimes);
+    });
+  });
+
+  const content = document.querySelector(".rbc-time-content");
+  if (content) {
+    const rerun = () => {
+      observer.disconnect();
+      observer.observe(content, { childList: true, subtree: true });
+    };
+    setTimeout(rerun, 0);
+    setTimeout(rerun, 100);
+  }
+
+  return () => observer.disconnect();
+}, [currentDate, currentView]);
 
   return (
-    <div className="h-[700px] rounded-md shadow-md calendar-container sm:h-[800px] md:h-[900px]">
+    <div
+      ref={calendarRef}
+      className="h-[700px] rounded-md shadow-md calendar-container sm:h-[800px] md:h-[900px]"
+    >
       <BigCalendar
         localizer={localizer}
         events={mappedEvents}
@@ -98,9 +136,26 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
         style={{ height: "100%" }}
         messages={messages}
         selectable
-        onSelectSlot={handleSelectSlot}
-        onNavigate={handleNavigate}
-        onView={handleViewChange}
+        onSelectSlot={({ start, end }) => {
+          const title = prompt("Titre de l’événement ?");
+          if (title && accounts.length > 0) {
+            const startDate = formatLocalDateTime(start);
+            const endDate = formatLocalDateTime(end);
+
+            createOutlookEvent(instance, accounts[0], {
+              subject: title,
+              startDate,
+              endDate,
+            })
+              .then(() => alert("Événement créé !"))
+              .catch((err: unknown) => {
+                console.error(err);
+                alert("Erreur création événement");
+              });
+          }
+        }}
+        onNavigate={(date) => setCurrentDate(date)}
+        onView={(view) => setCurrentView(view)}
       />
     </div>
   );
