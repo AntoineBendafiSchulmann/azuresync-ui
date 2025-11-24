@@ -10,7 +10,6 @@ import { createOutlookEvent } from "../../lib/createOutlookEvent";
 import { useEffect, useRef, useState } from "react";
 import { formatLocalDateTime } from "../../lib/utils/dateUtils";
 import { registerCalendarDropHandlers } from "../../lib/utils/drop-handler";
-import { toZonedTime } from "date-fns-tz";
 
 const locales = { fr };
 
@@ -47,14 +46,21 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
   const [currentView, setCurrentView] = useState("week");
   const [localEvents, setLocalEvents] = useState<{ title: string; start: Date; end: Date }[]>([]);
 
+  //console.log("événements reçus :", events);
+
   const mappedEvents = [
     ...events
       .filter((evt) => evt && evt.subject && evt.start?.dateTime && evt.end?.dateTime)
-      .map((evt) => ({
-        title: evt.subject,
-        start: new Date(toZonedTime(evt.start.dateTime, "Europe/Paris").getTime() + 60 * 60 * 1000),
-        end: new Date(toZonedTime(evt.end.dateTime, "Europe/Paris").getTime() + 60 * 60 * 1000),
-      })),
+      .map((evt) => {
+        const start = new Date(evt.start.dateTime + "Z");
+        const end = new Date(evt.end.dateTime + "Z");
+
+        return {
+          title: evt.subject,
+          start,
+          end,
+        };
+      }),
     ...localEvents,
   ];
 
@@ -114,7 +120,7 @@ export function ReactBigCalendar({ events }: { events: OutlookEvent[] }) {
         });
 
         generatedTimesByColumn.push(generatedTimes);
-        console.log(`tranches horaires de 30 min générées pour ${isoDate}:`, generatedTimes);
+        //console.log(`tranches horaires de 30 min générées pour ${isoDate}:`, generatedTimes);
       });
 
       isDataTimeGenerated = true;
