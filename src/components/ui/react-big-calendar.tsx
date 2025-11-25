@@ -1,7 +1,7 @@
 "use client";
 
 import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import "../../styles/big-calendar/react-big-calendar.css";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { fr } from "date-fns/locale";
 import type { OutlookEvent } from "../../lib/graph";
